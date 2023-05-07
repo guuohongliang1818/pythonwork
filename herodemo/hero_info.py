@@ -45,33 +45,30 @@ def createHero():
     for item in hero_list:
         if item.get("name") == name:
             print(f"姓名为{name}的英雄已经存在，创建失败。。。")
-            return False
+            return
     volume = int(input("请输入英雄的血量<正整数>："))
     fight = int(input("请输入英雄的攻击力<正整数>："))
     hero = {"name": name, "volume": volume, "fight": fight}
     hero_list.append(hero)
     print(f"姓名为{name}，血量为{volume}，攻击力为{fight}的英雄创建成功！！！")
-    return True
+
 
 def showHero():
-    name = input("请输入查看英雄名称：").strip(" ")
+    # name = input("请输入查看英雄名称：").strip(" ")
     if len(hero_list) != 0:
         # 展示所有英雄
-        # for item in hero_list:
-        #     print(f"姓名：{item.get('name')}\t血量：{item.get('volume')}\t攻击力：{item.get('fight')}")
-        if name == "":
-            print("输入的英雄名称不能为空。。。")
-            return False
-        else:
-            for item in hero_list:
-                if item.get("name") == name:
-                    print(f"姓名：{item.get('name')}\t血量：{item.get('volume')}\t攻击力：{item.get('fight')}")
-                    return True
-            print(f"您输入的{name}英雄名称未找到相关信息，请创建英雄。。。")
-            return False
+        for item in hero_list:
+            print(f"姓名：{item.get('name')}\t血量：{item.get('volume')}\t攻击力：{item.get('fight')}")
+    # if name == "":
+    #     print("输入的英雄名称不能为空。。。")
+    # else:
+    #     for item in hero_list:
+    #         if item.get("name") == name:
+    #             print(f"姓名：{item.get('name')}\t血量：{item.get('volume')}\t攻击力：{item.get('fight')}")
+    #             return
+    #     print(f"您输入的{name}英雄名称未找到相关信息，请创建英雄。。。")
     else:
         print("暂时没有英雄，请创建英雄。。。")
-        return False
 
 
 def updateHero():
@@ -79,7 +76,6 @@ def updateHero():
         name = input("请输入更新英雄名称：").strip(" ")
         if name == "":
             print("输入的英雄名称不能为空。。。")
-            return False
         else:
             for item in hero_list:
                 if item.get("name") == name:
@@ -92,12 +88,10 @@ def updateHero():
                     """
                     item.update({"volume": volume})
                     print(f"姓名为{name}，血量为{volume}的英雄信息更新成功")
-                    return True
+                    return
             print(f"您输入的{name}英雄名称未找到相关信息，请创建英雄。。。")
-            return False
     else:
         print("暂时没有英雄，请创建英雄。。。")
-        return False
 
 
 def deleteHero():
@@ -105,18 +99,15 @@ def deleteHero():
         name = input("请输入删除英雄名称：").strip(" ")
         if name == "":
             print("输入的英雄名称不能为空。。。")
-            return False
         else:
             for item in hero_list:
                 if item.get("name") == name:
                     hero_list.remove(item)
                     print(f"姓名为{name}的英雄信息删除成功！！！")
-                    return True
+                    return
             print(f"您输入的{name}英雄名称未找到相关信息。。。")
-            return False
     else:
         print("暂时没有英雄。。。")
-        return False
 
 
 if __name__ == '__main__':
