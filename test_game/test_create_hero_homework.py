@@ -42,7 +42,7 @@ def test_create_hero_fail_for_name(name, volume, power):
     hero_management = HeroManagement()
     hero_management.create_hero(name, volume, power)
     res = hero_management.find_hero(name)
-    assert not False
+    assert not res
 
 
 # 血量不符合要求，血量为边界值，负数，小数，字符串或boolean
@@ -57,7 +57,7 @@ def test_create_hero_fail_for_volume(name, volume, power):
     hero_management = HeroManagement()
     hero_management.create_hero(name, volume, power)
     res = hero_management.find_hero(name)
-    assert not False
+    assert not res
 
 
 # 攻击力不符合要求，攻击力为边界值，负数，小数，字符串或boolean
@@ -72,7 +72,7 @@ def test_create_hero_fail_for_power(name, volume, power):
     hero_management = HeroManagement()
     hero_management.create_hero(name, volume, power)
     res = hero_management.find_hero(name)
-    assert not False
+    assert not res
 
 # @pytest.mark.parametrize("power", [0, -1, 444.4, "123", "qe231", False],
 #                          ids=["边界值0", "负数", "浮点数", "数字字符串", "字符串", "布尔值"])
