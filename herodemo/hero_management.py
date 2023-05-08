@@ -21,11 +21,13 @@ class HeroManagement:
         return False
 
     def create_hero(self, hero_name, hero_volume, hero_power):
-        if (isinstance(hero_volume, int) and not isinstance(hero_volume, bool)) \
-                and (hero_volume <= 0 or hero_volume >= 100):
+        if not isinstance(hero_name, str):
             return False
 
-        if (isinstance(hero_power, int) and not isinstance(hero_power, bool)) and hero_power <= 0:
+        if not isinstance(hero_volume, int) or isinstance(hero_volume, bool) or hero_volume <= 0 or hero_volume >= 100:
+            return False
+
+        if not isinstance(hero_power, int) or isinstance(hero_power, bool) or hero_power <= 0:
             return False
 
         hero_info = {"name": hero_name, "volume": hero_volume, "power": hero_power}
@@ -37,3 +39,11 @@ class HeroManagement:
             if hero_name == i.get("name"):
                 return i
         return False
+
+
+if __name__ == '__main__':
+    hero_management = HeroManagement()
+    hero_management.create_hero(100, 12, 12)
+    res = hero_management.find_hero(100)
+    print("res=", res)
+    print(not res)
