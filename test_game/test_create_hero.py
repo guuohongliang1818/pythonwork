@@ -10,6 +10,7 @@ from herodemo.hero_management import HeroManagement
 
 
 # 解决方案：如果测试步骤与断言全部一样，只有输入的数据不一样，就可以使用参数化
+@pytest.mark.web
 @pytest.mark.parametrize("name,volume,power", [
     ("张三", 23, 23),
     ("李四", 25, 25),
@@ -27,6 +28,7 @@ def test_create_hero_success(name, volume, power):
     assert res.get("power") == power
 
 
+@pytest.mark.P0
 @pytest.mark.parametrize("volume", [0, 100], ids=["边界为0", "边界为100"])
 @allure.title("失败生成英雄")
 def test_create_hero3(volume):
@@ -36,6 +38,7 @@ def test_create_hero3(volume):
     assert not res
 
 
+@pytest.mark.P0
 @pytest.mark.parametrize("name", ["张三", "李四"])
 @pytest.mark.parametrize("volume", [23, 44])
 @pytest.mark.parametrize("power", [12, 67])
