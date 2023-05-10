@@ -1,0 +1,28 @@
+# 记录测试数据
+# yaml中 - 代表 数组/列表[1,2,3,4]
+#- 1
+#- 2
+#- 3
+#- 4
+name:
+  - 1
+  - 2
+  - 3
+  - 4
+age: 12
+client:
+  default-character-set: utf-8
+custom:
+  user1:
+    pwd: 666
+    user: 张三
+  user2:
+    pwd: 999
+    user: 李四
+mysql:
+  password: 123
+  user: root
+volume: 1234.1
+flag: False
+power: NULL
+
