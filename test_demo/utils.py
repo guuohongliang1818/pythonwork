@@ -22,5 +22,5 @@ def reader(yaml_path):
 
 
 if __name__ == '__main__':
-    data = Utils.load_yaml("./data.yaml")
+    data = Utils.load_yaml("../test_game/hero_info.yaml")
     print(data)
