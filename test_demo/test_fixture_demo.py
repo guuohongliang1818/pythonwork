@@ -32,12 +32,15 @@ def data2():
 
 @pytest.fixture(autouse=False)
 def merge_data(data, data2):
+    print("死翘翘")
     data2.extend(data)
 
 
 # 实现夹具的定制化
 def test_data(data2):
-    print(data2)
+    pass
+    print("*****", data2)
+    # print("merge_data", merge_data)
 
 
 print("=========================================================================")
@@ -52,20 +55,20 @@ def data3(request):
 
 # 创建新的集合
 @pytest.fixture
-def data_plus():
-    yield []
+def data_plus1():
+    pass
 
 
 # 数据+1之后放入到新的集合
-@pytest.fixture(autouse=False)
-def plus_one(data_plus, data3):
+@pytest.fixture(autouse=True)
+def plus_one(data3):
     # print("+1得到数据", data3)
-    data_plus.append(data3 + 1)
-    yield data_plus
+    yield data3 + 1
+    # print("data3:", data3)
 
 
-def test_data3(data_plus):
-    print("+1后的数据", data_plus)
+def test_data3(data3):
+    print("+1后的数据", data3)
 
 
 print("===========================================================================================")
