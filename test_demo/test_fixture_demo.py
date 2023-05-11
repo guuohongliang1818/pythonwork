@@ -2,10 +2,12 @@
 # 时间：2023/5/10 21:24
 import pytest
 
+from test_demo.utils import Utils
+
 
 @pytest.fixture
 def data():
-    return [1, 2, 3]
+    yield [1, 2, 3]
 
 
 # 有些时候需要对数据进行二次定制
@@ -16,7 +18,7 @@ def data_plus(data):
     for i in data:
         i = i + 1
         lst.append(i)
-    return lst
+    yield lst
 
 
 # 夹具套夹具，夹具开关的应用场景
@@ -25,7 +27,7 @@ def data_plus(data):
 # 如果有的场景要求数据+1，有的场景不要求数据+1，可以夹具开关
 @pytest.fixture
 def data2():
-    return ["a", "b", "c"]
+    yield ["a", "b", "c"]
 
 
 @pytest.fixture(autouse=False)
@@ -36,3 +38,45 @@ def merge_data(data, data2):
 # 实现夹具的定制化
 def test_data(data2):
     print(data2)
+
+
+print("=========================================================================")
+
+
+# 获取原始数据
+@pytest.fixture(params=Utils.load_yaml("./volume.yaml"))
+def data3(request):
+    print("#############", request.param)
+    yield request.param
+
+
+# 创建新的集合
+@pytest.fixture
+def data_plus():
+    yield []
+
+
+# 数据+1之后放入到新的集合
+@pytest.fixture(autouse=False)
+def plus_one(data_plus, data3):
+    # print("+1得到数据", data3)
+    data_plus.append(data3 + 1)
+    yield data_plus
+
+
+def test_data3(data_plus):
+    print("+1后的数据", data_plus)
+
+
+print("===========================================================================================")
+
+
+@pytest.fixture(params=Utils.load_yaml("./volume.yaml"))
+def data4(request):
+    print("#############", request)
+    yield request.param + 1
+
+
+# 将家具作为函数的参数
+def test_data4(data4):
+    print("+1之后得到数据：", data4)
