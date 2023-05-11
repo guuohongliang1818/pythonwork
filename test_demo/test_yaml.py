@@ -14,7 +14,7 @@ def test_yaml1():
 
 
 def test_yaml2():
-    with open("./data.yaml", "r", encoding="utf-8") as file:
+    with open("../test_game/test_create_hero_data.yaml", "r", encoding="utf-8") as file:
         data = yaml.safe_load(file)
     print(data)
 

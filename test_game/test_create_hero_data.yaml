@@ -1,0 +1,25 @@
+# 创建英雄成功的测试用例
+test_create_hero_success:
+  name: [ "张三","jinx","807834167","123@qq.com" ]
+  # 血量的取值范围 1<=volume<=99
+  volume: [ 1, 2, 98, 99 ]
+  # 攻击力的取值范围 >=1
+  power: [ 1, 50, 500, 5000 ]
+# 创建英雄失败的测试用例-姓名不符合要求
+test_create_hero_fail_for_name:
+  # 姓名为整数，小数，或boolean
+  name: [ 100, 101.1, false ]
+  volume: [ 50 ]
+  power: [ 500 ]
+# 创建英雄失败的测试用例-血量不符合要求
+test_create_hero_fail_for_volume:
+  name: [ "jinx" ]
+  # 血量不符合要求，血量为边界值，负数，小数，字符串或boolean
+  volume: [ 0, 100, 52.3, -20, "123", "qe231", False ]
+  power: [ 500 ]
+# 创建英雄失败的测试用例-攻击力不符合要求
+test_create_hero_fail_for_power:
+  name: [ "jinx" ]
+  volume: [ 50 ]
+  # 攻击力不符合要求，攻击力为边界值，负数，小数，字符串或boolean
+  power: [ 0, -50, 444.4, "123", "qe231", False ]
