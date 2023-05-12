@@ -17,8 +17,10 @@ class Utils:
 class TestHeroCreate:
     # 每次调用测试方法都会生成一个HeroManagement实例对象
 
-    def setup_method(self):
+    @pytest.fixture(autouse=True)
+    def create_hero_management(self):
         self.hero_management = HeroManagement()
+        yield self.hero_management
 
     def is_int(self, num):
         return isinstance(num, int) and not isinstance(num, bool)
@@ -136,7 +138,6 @@ class TestHeroCreate:
 
     @pytest.mark.run(order=6)
     @pytest.mark.parametrize("name", ["jinx"])
-    @pytest.mark.skipif(fail_for_volume_plus1 == None or success_for_power_plus1 == None, reason="参数为None")
     @allure.title("创建英雄失败的测试用例-血量边界值+1")
     def test_create_hero_fail_for_volume_p1(self, name, fail_for_volume_plus1, success_for_power_plus1):
         if fail_for_volume_plus1 == None or success_for_power_plus1 == None:
