@@ -46,10 +46,12 @@ print("=========================================================================
 
 
 # 获取原始数据
-@pytest.fixture(params=Utils.load_yaml("./volume.yaml"), autouse=True)
+@pytest.fixture(params=Utils.load_yaml("./volume.yaml"))
 def data3(request):
-    print("#############", request.param)
-    yield request.param + 1
+    result = False
+    if request.param == 2:
+        result = request.param + 1
+    yield result
 
 
 # 创建新的集合
@@ -59,9 +61,9 @@ def data_plus1():
 
 
 # 数据+1之后放入到新的集合
-@pytest.fixture(autouse=True)
+@pytest.fixture(autouse=False)
 def plus_one(data3):
-    yield
+    pass
 
 
 # print("+1得到数据", data3)
@@ -69,8 +71,8 @@ def plus_one(data3):
 # print("data3:", data3)
 
 
-def test_data3():
-    print("+1后的数据", )
+def test_data3(data3):
+    print("+1后的数据", data3)
 
 
 print("===========================================================================================")
