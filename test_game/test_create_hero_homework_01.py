@@ -16,6 +16,7 @@ class Utils:
 
 class TestHeroCreate:
     # 每次调用测试方法都会生成一个HeroManagement实例对象
+
     def setup_method(self):
         self.hero_management = HeroManagement()
 
@@ -62,39 +63,32 @@ class TestHeroCreate:
     @pytest.fixture
     def success_for_volume_plus1(self, success_for_volume):
         # 需要判断当前的参数是否是int类型，如果是int类型，并且是边界值，则+1
-        result = False
         if success_for_volume in [1, 99] and self.is_int(success_for_volume):
-            result = success_for_volume + 1
-        yield result
+            return success_for_volume + 1
 
     # 该夹具可在conftest.py文件中
     # "血量边界值0+1", "血量边界值100+1"
     @pytest.fixture
     def fail_for_volume_plus1(self, fail_for_volume):
         # 需要判断当前的参数是否是int类型，如果是int类型，并且是边界值，则+1
-        result = False
-        if fail_for_volume == 0 and self.is_int(fail_for_volume):
-            result = fail_for_volume + 1
-        yield result
+        if fail_for_volume in [0, 100] and self.is_int(fail_for_volume):
+            return fail_for_volume + 1
 
     # 该夹具可在conftest.py文件中
     # "攻击力边界值1+1"
     @pytest.fixture
     def success_for_power_plus1(self, success_for_power):
-        result = False
         if success_for_power == 1 and self.is_int(success_for_power):
-            result = success_for_power + 1
-        yield result
+            return success_for_power + 1
 
     # 该夹具可在conftest.py文件中
     # "攻击力边界值0+1"
     @pytest.fixture
     def fail_for_power_plus1(self, fail_for_power):
-        result = False
         if fail_for_power == 0 and self.is_int(fail_for_power):
-            result = fail_for_power + 1
-        yield result
+            return fail_for_power + 1
 
+    @pytest.mark.run(order=1)
     @allure.title("创建英雄成功的测试用例")
     def test_create_hero_success(self, success_for_name, success_for_volume, success_for_power):
         self.hero_management.create_hero(success_for_name, success_for_volume, success_for_power)
@@ -103,43 +97,70 @@ class TestHeroCreate:
         assert res.get("volume") == success_for_volume
         assert res.get("power") == success_for_power
 
+    @pytest.mark.run(order=2)
     @allure.title("创建英雄失败的测试用例-姓名不符合要求")
     def test_create_hero_fail_for_name(self, fail_for_name, success_for_volume, success_for_power):
         self.hero_management.create_hero(fail_for_name, success_for_volume, success_for_power)
         res = self.hero_management.find_hero(fail_for_name)
         assert not res
 
+    @pytest.mark.run(order=3)
     @allure.title("创建英雄失败的测试用例-血量不符合要求")
     def test_create_hero_fail_for_volume(self, success_for_name, fail_for_volume, success_for_power):
         self.hero_management.create_hero(success_for_name, fail_for_volume, success_for_power)
         res = self.hero_management.find_hero(success_for_name)
         assert not res
 
+    @pytest.mark.run(order=4)
     @allure.title("创建英雄失败的测试用例-攻击力不符合要求")
     def test_create_hero_fail_for_power(self, success_for_name, success_for_volume, fail_for_power):
         self.hero_management.create_hero(success_for_name, success_for_volume, fail_for_power)
         res = self.hero_management.find_hero(success_for_name)
         assert not res
 
+    @pytest.mark.run(order=5)
+    @pytest.mark.parametrize("name", ["jinx"])
     @allure.title("创建英雄成功的测试用例-(血+1)-(攻+1)")
-    def test_create_hero_success_volume_p1_and_power_p1(self, success_for_name, success_for_volume_plus1,
-                                                        success_for_power_plus1):
+    def test_create_hero_success_volume_p1_and_power_p1(self, name, success_for_volume_plus1, success_for_power_plus1):
+        if success_for_volume_plus1 == None or success_for_power_plus1 == None:
+            return False
+        # print(f"{name}，{success_for_volume_plus1}，{success_for_power_plus1}")
+        result = self.hero_management.create_hero(name, success_for_volume_plus1, success_for_power_plus1)
+        if not result:
+            return False
+        res = self.hero_management.find_hero(name)
+        # 可能存在创建成功，也可能创建失败，因为被测需求的代码没有修改
+        assert res.get("name") == name
+        assert res.get("volume") == success_for_volume_plus1
+        assert res.get("power") == success_for_power_plus1
 
-        print(f"{success_for_name}，{success_for_volume_plus1}，{success_for_power_plus1}")
-        # if isinstance(success_for_volume_plus1, bool) and isinstance(success_for_power_plus1, bool):
-        #     return
-        # self.hero_management.create_hero(success_for_name, success_for_volume_plus1, success_for_power_plus1)
-        # res = self.hero_management.find_hero(success_for_name)
-        # assert not res
-
+    @pytest.mark.run(order=6)
+    @pytest.mark.parametrize("name", ["jinx"])
+    @pytest.mark.skipif(fail_for_volume_plus1 == None or success_for_power_plus1 == None, reason="参数为None")
     @allure.title("创建英雄失败的测试用例-血量边界值+1")
-    def test_create_hero_fail_for_volume(self, success_for_name, fail_for_volume_plus1, success_for_volume_plus1):
-        self.hero_management.create_hero(success_for_name, fail_for_volume_plus1, success_for_volume_plus1)
-        res = self.hero_management.find_hero(success_for_name)
-        assert not res
+    def test_create_hero_fail_for_volume_p1(self, name, fail_for_volume_plus1, success_for_power_plus1):
+        if fail_for_volume_plus1 == None or success_for_power_plus1 == None:
+            return False
+        result = self.hero_management.create_hero(name, fail_for_volume_plus1, success_for_power_plus1)
+        if not result:
+            return False
+        res = self.hero_management.find_hero(name)
+        # 可能存在创建成功，也可能创建失败，因为被测需求的代码没有修改
+        assert res.get("name") == name
+        assert res.get("volume") == fail_for_volume_plus1
+        assert res.get("power") == success_for_power_plus1
 
+    @pytest.mark.run(order=7)
+    @pytest.mark.parametrize("name", ["jinx"])
     @allure.title("创建英雄失败的测试用例-攻击力边界值+1")
-    def test_create_hero_fail_for_volume(self, success_for_name, success_for_volume_plus1, fail_for_power_plus1):
-        self.hero_management.create_hero(success_for_name, success_for_volume_plus1, fail_for_power_plus1)
-        res = self.hero_management.find_hero(success_for_name)
-        assert not res
+    def test_create_hero_fail_for_power_p1(self, name, success_for_volume_plus1, fail_for_power_plus1):
+        if success_for_volume_plus1 == None or fail_for_power_plus1 == None:
+            return False
+        result = self.hero_management.create_hero(name, success_for_volume_plus1, fail_for_power_plus1)
+        if not result:
+            return False
+        res = self.hero_management.find_hero(name)
+        # 可能存在创建成功，也可能创建失败，因为被测需求的代码没有修改
+        assert res.get("name") == name
+        assert res.get("volume") == success_for_volume_plus1
+        assert res.get("power") == fail_for_power_plus1

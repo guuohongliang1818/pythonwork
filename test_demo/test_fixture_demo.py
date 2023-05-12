@@ -30,7 +30,7 @@ def data2():
     yield ["a", "b", "c"]
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture(autouse=False)
 def merge_data(data, data2):
     print("hahaha")
     data2.extend(data)
@@ -48,9 +48,17 @@ print("=========================================================================
 # 获取原始数据
 @pytest.fixture(params=Utils.load_yaml("./volume.yaml"))
 def data3(request):
+    # result = False
+    # if request.param == 2:
+    #     result = request.param + 1
+    yield request.param
+
+
+@pytest.fixture
+def data_transform(data3):
     result = False
-    if request.param == 2:
-        result = request.param + 1
+    if data3 == 2:
+        result = data3 + 1
     yield result
 
 
@@ -71,8 +79,8 @@ def plus_one(data3):
 # print("data3:", data3)
 
 
-def test_data3(data3):
-    print("+1后的数据", data3)
+def test_data3(data_transform):
+    print("+1后的数据", data_transform)
 
 
 print("===========================================================================================")
