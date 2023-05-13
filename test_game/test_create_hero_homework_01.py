@@ -97,7 +97,7 @@ class TestHeroCreate:
         else:
             pytest.skip("攻击力非等价类None，跳过执行测试用例")
 
-    @pytest.mark.run(order=1)
+    @pytest.mark.run(order=4)
     @allure.title("创建英雄成功的测试用例")
     def test_create_hero_success(self, success_for_name, success_for_volume, success_for_power):
         self.hero_management.create_hero(success_for_name, success_for_volume, success_for_power)
@@ -106,28 +106,28 @@ class TestHeroCreate:
         assert res.get("volume") == success_for_volume
         assert res.get("power") == success_for_power
 
-    @pytest.mark.run(order=2)
+    @pytest.mark.run(order=5)
     @allure.title("创建英雄失败的测试用例-姓名不符合要求")
     def test_create_hero_fail_for_name(self, fail_for_name, success_for_volume, success_for_power):
         self.hero_management.create_hero(fail_for_name, success_for_volume, success_for_power)
         res = self.hero_management.find_hero(fail_for_name)
         assert not res
 
-    @pytest.mark.run(order=3)
+    @pytest.mark.run(order=6)
     @allure.title("创建英雄失败的测试用例-血量不符合要求")
     def test_create_hero_fail_for_volume(self, success_for_name, fail_for_volume, success_for_power):
         self.hero_management.create_hero(success_for_name, fail_for_volume, success_for_power)
         res = self.hero_management.find_hero(success_for_name)
         assert not res
 
-    @pytest.mark.run(order=4)
+    @pytest.mark.run(order=7)
     @allure.title("创建英雄失败的测试用例-攻击力不符合要求")
     def test_create_hero_fail_for_power(self, success_for_name, success_for_volume, fail_for_power):
         self.hero_management.create_hero(success_for_name, success_for_volume, fail_for_power)
         res = self.hero_management.find_hero(success_for_name)
         assert not res
 
-    @pytest.mark.run(order=5)
+    @pytest.mark.run(order=1)
     @allure.title("创建英雄成功的测试用例-(血+1)-(攻+1)")
     def test_create_hero_success_volume_p1_and_power_p1(self, success_for_name, success_for_volume_plus1,
                                                         success_for_power_plus1):
@@ -142,7 +142,7 @@ class TestHeroCreate:
         else:
             assert not res
 
-    @pytest.mark.run(order=6)
+    @pytest.mark.run(order=2)
     @allure.title("创建英雄失败的测试用例-(血+1)")
     def test_create_hero_fail_for_volume_p1(self, success_for_name, fail_for_volume_plus1, success_for_power_plus1):
         result = self.hero_management.create_hero(success_for_name, fail_for_volume_plus1, success_for_power_plus1)
@@ -155,7 +155,7 @@ class TestHeroCreate:
         else:
             assert not res
 
-    @pytest.mark.run(order=7)
+    @pytest.mark.run(order=3)
     @allure.title("创建英雄失败的测试用例-(攻+1)")
     def test_create_hero_fail_for_power_p1(self, success_for_name, success_for_volume_plus1, fail_for_power_plus1):
         result = self.hero_management.create_hero(success_for_name, success_for_volume_plus1, fail_for_power_plus1)

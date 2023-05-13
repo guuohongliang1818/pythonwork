@@ -46,11 +46,8 @@ print("=========================================================================
 
 
 # 获取原始数据
-@pytest.fixture(params=Utils.load_yaml("./volume.yaml"))
+@pytest.fixture(params=[1, 2, 3, 4])
 def data3(request):
-    # result = False
-    # if request.param == 2:
-    #     result = request.param + 1
     yield request.param
 
 
@@ -77,6 +74,9 @@ def plus_one(data3):
 # print("+1得到数据", data3)
 # yield data3 + 1
 # print("data3:", data3)
+
+def test_data3():
+    assert True
 
 
 def test_data3(data_transform):
