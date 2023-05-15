@@ -12,6 +12,8 @@ allure报告截图路径：https://github.com/guuohongliang1818/pythonwork/tree/
 测试数据yaml文件路径：https://github.com/guuohongliang1818/pythonwork/blob/master/test_game/test_create_hero_data_01.yaml
 allure测试报告：https://github.com/guuohongliang1818/pythonwork/tree/master/test_game/result
 """
+
+
 class Utils:
     @classmethod
     def load_yaml(cls, yaml_path):
