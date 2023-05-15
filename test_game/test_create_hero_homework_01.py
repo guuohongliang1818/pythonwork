@@ -8,10 +8,8 @@ from herodemo.hero_management import HeroManagement
 
 """
 注意：
-allure报告截图路径
-测试数据yaml文件路径
-
-
+allure报告截图路径：https://github.com/guuohongliang1818/pythonwork/tree/master/test_game/allure%E6%88%AA%E5%9B%BE
+测试数据yaml文件路径：https://github.com/guuohongliang1818/pythonwork/blob/master/test_game/test_create_hero_data_01.yaml
 """
 class Utils:
     @classmethod
