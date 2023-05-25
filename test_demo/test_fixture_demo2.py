@@ -25,6 +25,6 @@ def merge_data(data, data2):
 
 # 实现夹具的定制化
 # @pytest.mark.parametrize("volume", data2)
-def test_data(data2):
-    print("*****", data2)
-    # print("merge_data", merge_data)
+def test_data():
+    # print("*****", merge_data)
+    print("merge_data", merge_data)
