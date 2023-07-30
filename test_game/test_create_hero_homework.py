@@ -24,13 +24,16 @@ def isint():
 @pytest.mark.parametrize("volume", [1, 2, 98, 99])
 @pytest.mark.parametrize("name", ["张三", "jinx", "807834167", "123@qq.com"])
 @allure.title("创建英雄成功的测试用例")
+@allure.step("创建英雄成功的测试用例")
 def test_create_hero_success(name, volume, power):
-    hero_management = HeroManagement()
-    hero_management.create_hero(name, volume, power)
-    res = hero_management.find_hero(name)
-    assert res.get("name") == name
-    assert res.get("volume") == volume
-    assert res.get("power") == power
+    with allure.step("创建英雄成功的测试用例"):
+        hero_management = HeroManagement()
+        hero_management.create_hero(name, volume, power)
+        res = hero_management.find_hero(name)
+        print(res)
+        assert res.get("name") == name
+        assert res.get("volume") == volume
+        assert res.get("power") == power
 
 
 # 姓名不符合要求，姓名为整数，小数，或boolean
@@ -50,7 +53,8 @@ def test_create_hero_fail_for_name(name, volume, power):
 
 @pytest.mark.parametrize("power", [500])
 @pytest.mark.parametrize("volume", [0, 100, 52.3, -20, "123", "qe231", False],
-                         ids=["血量为边界值0", "血量为边界值100", "血量为浮点数", "血量为负数", "血量为数字字符串", "血量为字符串", "血量为布尔值"])
+                         ids=["血量为边界值0", "血量为边界值100", "血量为浮点数", "血量为负数", "血量为数字字符串",
+                              "血量为字符串", "血量为布尔值"])
 @pytest.mark.parametrize("name", ["jinx"])
 @allure.title("创建英雄失败的测试用例-血量不符合要求")
 def test_create_hero_fail_for_volume(name, volume, power):
@@ -64,7 +68,8 @@ def test_create_hero_fail_for_volume(name, volume, power):
 
 
 @pytest.mark.parametrize("power", [0, -1, 444.4, "123", "qe231", False],
-                         ids=["攻击力为边界值0", "攻击力为负数", "攻击力为浮点数", "攻击力为数字字符串", "攻击力为字符串", "攻击力为布尔值"])
+                         ids=["攻击力为边界值0", "攻击力为负数", "攻击力为浮点数", "攻击力为数字字符串",
+                              "攻击力为字符串", "攻击力为布尔值"])
 @pytest.mark.parametrize("volume", [98])
 @pytest.mark.parametrize("name", ["jinx"])
 @allure.title("创建英雄失败的测试用例-攻击力不符合要求")

@@ -1,5 +1,7 @@
 # 姓名：郭宏亮
 # 时间：2023/5/10 19:52
+import os
+
 import pytest
 import yaml
 
@@ -22,3 +24,8 @@ def test_yaml2():
 @pytest.mark.parametrize("volume", Utils.load_yaml("./volume.yaml"))
 def test_yaml3(volume):
     print(f"volume:{volume}")
+
+
+if __name__ == '__main__':
+    pytest.main(["-vs", "./case/test_yaml.py", "--alluredir", "./result", "--clear-alluredir"])
+    os.system("allure generate ./result -o ./report-allure/ --clear")
