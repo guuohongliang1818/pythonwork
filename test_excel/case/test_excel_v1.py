@@ -36,6 +36,8 @@ def test_01(data):
     # res = ak.post(url=dict_data.get("url"), params=dict_data.get("params"), json=dict_data.get(data[7]))
     res = ak.post(**dict_data)
     print(res.text)
+    print(type(res.text))
+    print(type(res.json()))
 
 
 if __name__ == '__main__':
