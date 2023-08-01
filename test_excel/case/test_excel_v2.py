@@ -1,5 +1,6 @@
 # 姓名：郭宏亮
 # 时间：2023/7/31 21:41
+import allure
 import openpyxl
 import pytest
 
@@ -23,9 +24,11 @@ def setup_module():
 
 @pytest.mark.parametrize("data", read_excel())
 def test_01(data):
+    # 动态生成用例标题
+    allure.dynamic.title(data[11])
     # ==========excel数据解析==========
     # print(data)
-    r = data[0]
+    r = data[0] + 1
     try:
         dict_data = {
             "url": data[1] + data[2],
