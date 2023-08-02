@@ -74,4 +74,4 @@ def test_01(data):
 
 
 if __name__ == '__main__':
-    pytest.main(["-s", "test_excel_v1.py::test_01"])
+    pytest.main(["-s", "test_excel_v1.py"])

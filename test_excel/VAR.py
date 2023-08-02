@@ -8,6 +8,6 @@ PARAMS = {
     "application_client_type": "weixin"
 }
 # 比如excel_read.py文件，excel文件路径应该是../
-EXCEL_PATH = "../data/api_cases_V1.xlsx"
-EXCEL_PATH2 = "../data/api_cases_V2.xlsx"
-EXCEL_PATH3 = "../data/api_cases_V3.xlsx"
+EXCEL_PATH = "./data/api_cases_V1.xlsx"
+EXCEL_PATH2 = "./data/api_cases_V2.xlsx"
+EXCEL_PATH3 = "./data/api_cases_V3.xlsx"
