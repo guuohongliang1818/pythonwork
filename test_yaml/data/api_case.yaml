@@ -1,0 +1,49 @@
+- title: 成功调佣登陆接口，msg返回登录成功
+  url: http://shop-xo.hctestedu.com/index.php?s=
+  apiPath: api/user/login
+  method: post
+  params:
+    application: app
+    application_client_type: weixin
+  headers: null
+  data:
+    accounts: zz
+    pwd: 123456
+    type: username
+  dataType: json
+  validate: $..msg
+  expect: 登录成功
+  result: null
+  jsonVar: VAR_TOKEN;VAR_MSG
+  jsonPath: $..token;$..msg
+  regVar: null
+  regPath: ~
+  story: F01S01_登录
+  feature: 正常用例登陆
+  note: 正常用例登录
+  level: blocker
+- title: 成功加入购物车，msg返回加入成功
+  url: http://shop-xo.hctestedu.com/index.php?s=
+  apiPath: api/cart/save
+  method: post
+  params:
+    application: app
+    application_client_type: weixin
+    token: all_val['VAR_TOKEN']
+  headers: null
+  data:
+    goods_id: 10
+    spec: ~
+    stock: 1
+  dataType: json
+  validate: $..msg
+  expect: 加入成功
+  result: null
+  jsonVar: null
+  jsonPath: null
+  regVar: null
+  regPath: ~
+  story: F02S01_加入购物车
+  feature: F01_购物车管理
+  note: 测试接口关联
+  level: blocker

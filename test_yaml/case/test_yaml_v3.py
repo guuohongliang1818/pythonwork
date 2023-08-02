@@ -14,13 +14,17 @@ from test_yaml.data_driver.yaml_driver import load_yaml, write_yaml
 # @pytest.fixture(scope="class")
 def setup_module():
     # 1.定义全局变量
-    global ak, all_value, yaml_data
+    global ak, all_val, yaml_data
     # 实例化工具类
     ak = ApiKey()
     # 初始化excel文件
     yaml_data = []
     # 参数化变量存储字典临时数据库
-    all_value = {}
+    all_val = {}
+
+
+def teardown_module():
+    write_yaml(yaml_data, "../data/result.yaml")
 
 
 @pytest.mark.parametrize("data", load_yaml(YAML_PATH))
@@ -50,6 +54,7 @@ def test_01(data):
             "headers": data["headers"],
             data["dataType"]: data["data"]
         }
+        dict_data = eval(str(dict_data).replace("all_val['VAR_TOKEN']", all_val['VAR_TOKEN']))
     except:
         print("========实际结果=======")
         print("请求参数有误，请检查")
@@ -59,6 +64,9 @@ def test_01(data):
     print(dict_data)
     # res = ak.post(url=dict_data.get("url"), params=dict_data.get("params"), json=dict_data.get(data[7]))
     res = ak.post(**dict_data)
+
+    # 反射
+    # res = getattr(ak, data[3])(**dict_data)
     print(res.text)
 
     # ================JSON提取器===================
@@ -84,8 +92,9 @@ def test_01(data):
 
             # 形成字典对应的关系
             # 重要：将所有用例提取的key，value都保存起来
-            all_value[key] = value
+            all_val[key] = value
     # 结果检查
+    print("all_val", all_val)
     # 实际结果
     try:
         result = None
@@ -101,15 +110,10 @@ def test_01(data):
         data["result"] = "预期结果的jsonpath表达式有误，请检查"
     finally:
         yaml_data.append(data)
-        write_yaml(yaml_data, "../data/result.yaml")
-
         assert result == data["expect"]
 
 
-# 反射
-# res = getattr(ak, data[3])(**dict_data)
 
 
 if __name__ == '__main__':
     pytest.main(["-s", "test_yaml_v3.py::test_01"])
-    pass
