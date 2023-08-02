@@ -25,7 +25,7 @@ def setup_module():
 def test_01(data):
     # ==========excel数据解析==========
     # print(data)
-    r = data[0]
+    r = data[0] + 1
     try:
         dict_data = {
             "url": data[1] + data[2],
@@ -45,8 +45,8 @@ def test_01(data):
     print(dict_data)
     # res = ak.post(url=dict_data.get("url"), params=dict_data.get("params"), json=dict_data.get(data[7]))
     res = ak.post(**dict_data)
-    print(res.text)
-    print(type(res.text))
+    # print(res.text)
+    # print(type(res.text))
     print(type(res.json()))
 
     # 结果检查
