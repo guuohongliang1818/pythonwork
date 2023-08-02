@@ -3,7 +3,7 @@
 import allure
 import pytest
 
-from test_yaml.VAR import YAML_PATH
+from test_yaml.VAR import YAML_PATH, WRITE_PATH
 from test_yaml.api_keyword.api_key import ApiKey
 
 from test_yaml.data_driver.yaml_driver import load_yaml, write_yaml
@@ -24,7 +24,7 @@ def setup_module():
 
 
 def teardown_module():
-    write_yaml(yaml_data, "../data/result.yaml")
+    write_yaml(yaml_data, WRITE_PATH)
 
 
 @pytest.mark.parametrize("data", load_yaml(YAML_PATH))
@@ -111,8 +111,6 @@ def test_01(data):
     finally:
         yaml_data.append(data)
         assert result == data["expect"]
-
-
 
 
 if __name__ == '__main__':

@@ -19,7 +19,7 @@
   regVar: null
   regPath: ~
   story: F01S01_登录
-  feature: 正常用例登陆
+  feature: 用户登陆
   note: 正常用例登录
   level: blocker
 - title: 成功加入购物车，msg返回加入成功

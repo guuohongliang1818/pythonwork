@@ -5,7 +5,7 @@
     type: username
   dataType: json
   expect: 登录成功
-  feature: 正常用例登陆
+  feature: 用户登陆
   headers: null
   jsonPath: $..token;$..msg
   jsonVar: VAR_TOKEN;VAR_MSG
