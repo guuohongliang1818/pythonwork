@@ -8,3 +8,4 @@ PARAMS = {
     "application_client_type": "weixin"
 }
 # 比如excel_read.py文件，excel文件路径应该是../
+YAML_PATH = "../data/demo.yaml"

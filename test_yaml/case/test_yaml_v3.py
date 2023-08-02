@@ -1,12 +1,12 @@
 # 姓名：郭宏亮
 # 时间：2023/7/31 21:41
 import allure
-import openpyxl
 import pytest
 
-from test_yaml.VAR import EXCEL_PATH, EXCEL_PATH2, EXCEL_PATH3
+from test_yaml.VAR import YAML_PATH
 from test_yaml.api_keyword.api_key import ApiKey
-from test_yaml.data_driver.excel_read import read_excel, read_excel3
+
+from test_yaml.data_driver.yaml_driver import load_yaml, write_yaml
 
 
 # 在当前文件中，所有的用例执行之前运行一次
@@ -14,68 +14,62 @@ from test_yaml.data_driver.excel_read import read_excel, read_excel3
 # @pytest.fixture(scope="class")
 def setup_module():
     # 1.定义全局变量
-    global ak, excel, sheet, all_value
+    global ak, all_value, yaml_data
     # 实例化工具类
     ak = ApiKey()
     # 初始化excel文件
-    excel = openpyxl.load_workbook(EXCEL_PATH3)
-    sheet = excel["Sheet1"]
+    yaml_data = []
     # 参数化变量存储字典临时数据库
     all_value = {}
 
 
-@pytest.mark.parametrize("data", read_excel3())
+@pytest.mark.parametrize("data", load_yaml(YAML_PATH))
 def test_01(data):
     # 动态生成用例标题
-    if data[11] is not None:
-        allure.dynamic.title(data[11])
+    if data["title"] is not None:
+        allure.dynamic.title(data["title"])
 
-    if data[16] is not None:
-        allure.dynamic.story(data[16])
+    if data["story"] is not None:
+        allure.dynamic.story(data["story"])
 
-    if data[17] is not None:
-        allure.dynamic.feature(data[17])
+    if data["feature"] is not None:
+        allure.dynamic.feature(data["feature"])
 
-    if data[18] is not None:
-        allure.dynamic.description(data[18])
+    if data["note"] is not None:
+        allure.dynamic.description(data["note"])
 
-    if data[19] is not None:
-        allure.dynamic.severity(data[19])
+    if data["level"] is not None:
+        allure.dynamic.severity(data["level"])
     # ==========excel数据解析==========
     # print(data)
-    r = data[0] + 1
     try:
+        # eval无法解析字典数据
         dict_data = {
-            "url": data[1] + data[2],
-            "params": eval(data[4]),
-            "headers": eval(data[5]),
-            data[7]: eval(data[6])
+            "url": data["url"] + data["apiPath"],
+            "params": data["params"],
+            "headers": data["headers"],
+            data["dataType"]: data["data"]
         }
     except:
         print("========实际结果=======")
         print("请求参数有误，请检查")
-
-        # 这里列是从1开始的
-        sheet.cell(r, 11).value = "请求参数有误，请检查"
-        excel.save(EXCEL_PATH3)
+        data["result"] = "请求参数有误，请检查"
 
     # 发起请求
     print(dict_data)
     # res = ak.post(url=dict_data.get("url"), params=dict_data.get("params"), json=dict_data.get(data[7]))
     res = ak.post(**dict_data)
     print(res.text)
-    print(type(res.text))
-    print(type(res.json()))
 
     # ================JSON提取器===================
-    if data[12] is not None:
-        var_str = data[12]
+    if data["jsonVar"] is not None:
+        var_str = data["jsonVar"]
         print(var_str)
         # 用分号分割var_str字符串，并保存到列表
         var_str_list = var_str.split(";")
         print(var_str_list)
         # 获取json的表达式
-        json_str = data[13]
+        json_str = data["jsonPath"]
         json_str_list = json_str.split(";")
         print(json_str_list)
 
@@ -95,20 +89,21 @@ def test_01(data):
     # 实际结果
     try:
         result = None
-        result = ak.get_text(res.text, data[8])
-        print(result == data[9])
-        if result == data[9]:
-            sheet.cell(r, 11).value = "通过"
+        result = ak.get_text(res.text, data["validate"])
+        print(result == data["expect"])
+        if result == data["expect"]:
+            data["result"] = "通过"
         else:
-            sheet.cell(r, 11).value = "不通过"
-        excel.save(EXCEL_PATH3)
+            data["result"] = "不通过"
     except:
         print("==============实际结果==============")
         print("预期结果的jsonpath表达式有误，请检查")
-        sheet.cell(r, 11).value = "预期结果的jsonpath表达式有误，请检查"
-        excel.save(EXCEL_PATH3)
+        data["result"] = "预期结果的jsonpath表达式有误，请检查"
     finally:
-        assert result == data[9]
+        yaml_data.append(data)
+        write_yaml(yaml_data, "../data/result.yaml")
+
+        assert result == data["expect"]
 
 
 # 反射
@@ -116,5 +111,5 @@ def test_01(data):
 
 
 if __name__ == '__main__':
-    # pytest.main(["-s", "test_excel_v1.py::test_01"])
+    pytest.main(["-s", "test_yaml_v3.py::test_01"])
     pass

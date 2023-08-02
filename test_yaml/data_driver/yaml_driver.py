@@ -19,4 +19,4 @@ if __name__ == '__main__':
     result = load_yaml("../data/demo.yaml")
     print(result)
     # 字段的顺序会乱
-    write_yaml(result, "../data/test01.yaml")
+    # write_yaml(result, "../data/test01.yaml")
