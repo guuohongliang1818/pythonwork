@@ -54,20 +54,21 @@ def test_01(data):
             "headers": data["headers"],
             data["dataType"]: data["data"]
         }
-        dict_data = eval(str(dict_data).replace("all_val['VAR_TOKEN']", all_val['VAR_TOKEN']))
-    except:
+        if "all_val['VAR_TOKEN']" in str(dict_data):
+            dict_data = eval(str(dict_data).replace("all_val['VAR_TOKEN']", all_val.get('VAR_TOKEN')))
+    except BaseException as e:
         print("========实际结果=======")
-        print("请求参数有误，请检查")
+        print("请求参数有误，请检查：", e)
         data["result"] = "请求参数有误，请检查"
-
+    # print("data：", data)
     # 发起请求
-    print(dict_data)
+    print("请求参数：", dict_data)
     # res = ak.post(url=dict_data.get("url"), params=dict_data.get("params"), json=dict_data.get(data[7]))
     res = ak.post(**dict_data)
 
     # 反射
     # res = getattr(ak, data[3])(**dict_data)
-    print(res.text)
+    print("请求返回：", res.text)
 
     # ================JSON提取器===================
     if data["jsonVar"] is not None:
