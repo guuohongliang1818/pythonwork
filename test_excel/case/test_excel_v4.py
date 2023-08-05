@@ -110,6 +110,24 @@ def test_01(data):
     finally:
         assert result == data[9]
 
+    if data[2] is not None:
+        try:
+            # sql查询的结果
+            sql_check = None
+            sql = data[20]
+            sql_check = ak.sql_check(sql)
+            if sql_check == data[21]:
+                sheet.cell(r, 11).value = "通过"
+            else:
+                sheet.cell(r, 11).value = "不通过"
+            excel.save(EXCEL_PATH3)
+        except:
+            print("============sql异常===========")
+            sheet.cell(r, 11).value = "sql异常"
+            excel.save(EXCEL_PATH3)
+        finally:
+            assert sql_check == data[21]
+
 
 # 反射
 # res = getattr(ak, data[3])(**dict_data)

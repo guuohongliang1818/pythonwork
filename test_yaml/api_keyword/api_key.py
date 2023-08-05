@@ -13,6 +13,7 @@ import json
 import logging
 import allure
 import jsonpath
+import pymysql
 import requests
 
 
@@ -39,3 +40,30 @@ class ApiKey:
         dict_data = json.loads(response)
         value_list = jsonpath.jsonpath(dict_data, key)
         return value_list[0]
+
+    @allure.step("数据库检查")
+    def sql_check(self, sql):
+        # 01建立连接
+        conn = pymysql.connect(
+            host="shop-xo.hctestedu.com",
+            port=3306,
+            user="api_test",
+            password="Aa9999!",
+            database="shopxo_hctested",
+            charset="utf8mb4"
+        )
+        # 创建游标
+        cmd = conn.cursor()
+        # 执行sql语句
+        cmd.execute(query=sql)
+        # 获取查询结果
+        result = cmd.fetchone()[0]
+        # 关闭连接
+        conn.close()
+        return result
+
+
+if __name__ == '__main__':
+    ak = ApiKey()
+    results = ak.sql_check("select username,'123' from sxo_admin")
+    print(results)
