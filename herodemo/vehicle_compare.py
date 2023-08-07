@@ -5,7 +5,6 @@ import openpyxl
 list_1 = []
 excel = openpyxl.load_workbook("E:/wlhy-service/vehicle_type_info.xlsx")
 sheet = excel["vehicle_type_info"]
-print(sheet.values)
 for i in sheet.values:
     if type(i[0]) is int:
         data = {}
@@ -15,13 +14,9 @@ for i in sheet.values:
 
 print("原始长度：", len(list_1))
 
-# print(list_1)
-
 list_2 = []
 excel1 = openpyxl.load_workbook("E:/wlhy-service/SYS_PARAMETER.xlsx")
 sheet1 = excel1["SYS_PARAMETER"]
-print(sheet1.values)
-# print(len(sheet.values))
 for i in sheet1.values:
     if type(i[0]) is int:
         data = {}
@@ -42,17 +37,14 @@ for data1 in list_1:
             list_same_code.append(data1.get("code"))
             list_same_name.append(data1.get("name"))
 
-print(len(list_same_code))
-# print(list_same_code)
-
 for data1 in list_1:
     if data1.get("code") in list_same_code and data1.get("name") in list_same_name:
         pass
     else:
-        print(data1)
+        print("小凯多余的数据：", data1)
 print("=============")
 for data2 in list_2:
     if data2.get("code") in list_same_code and data2.get("name") in list_same_name:
         pass
     else:
-        print(data2)
+        print("五洲多余的数据：", data2)
